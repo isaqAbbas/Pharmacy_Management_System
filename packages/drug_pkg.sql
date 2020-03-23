@@ -1,12 +1,12 @@
 create or replace  package drug_pkg as
-function getid(p_drug_name drug.name%type) return drug.drug_id%type;
+function get_drug_id(p_drug_name drug.name%type) return drug.drug_id%type;
 procedure ins(p_drug_id drug.drug_id%type,p_name drug.name%type,p_price drug.price%type,p_expiry_date drug.expiry_date%type,p_drug_producer_id drug.drug_producer_id%type,p_receipt drug.receipt%type);
 procedure upt(p_drug_id drug.drug_id%type,p_name drug.name%type,p_price drug.price%type,p_expiry_date drug.expiry_date%type,p_drug_producer_id drug.drug_producer_id%type,p_receipt drug.receipt%type);
 procedure del(p_drug_id drug.drug_id%type);
 end drug_pkg;
 /
 create or replace  package body drug_pkg as
-function getid(p_drug_name drug.name%type) return drug.drug_id%type as
+function get_drug_id(p_drug_name drug.name%type) return drug.drug_id%type as
   v_id drug.drug_id%type;
 begin
     select drug_id into v_id from drug where name=p_drug_name;
@@ -14,7 +14,7 @@ begin
    exception--sytem defined exception
      when no_data_found then
        return 0;
-end getid;
+end get_drug_id;
 
 procedure ins(p_drug_id drug.drug_id%type,p_name drug.name%type,p_price drug.price%type,p_expiry_date drug.expiry_date%type,p_drug_producer_id drug.drug_producer_id%type,p_receipt drug.receipt%type)as
 begin

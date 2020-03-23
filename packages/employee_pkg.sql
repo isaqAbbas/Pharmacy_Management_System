@@ -1,14 +1,13 @@
 create or replace package employee_pkg as
-function getid(p_employee_name employee.name%type) return employee.employee_id%Type;
-function getbranchid(p_employee_name employee.name%type) return employee.pharmacy_branch_id%Type;
-function getbranchid(p_employee_id employee.employee_id%type) return employee.pharmacy_branch_id%Type;
+function get_emp_id(p_employee_name employee.name%type) return employee.employee_id%Type;
+function get_branch_id(p_employee_id employee.employee_id%type) return employee.pharmacy_branch_id%Type;
 procedure ins(p_employee_id employee.employee_id%type,p_name employee.name%type,p_pharmacy_branch_id employee.pharmacy_branch_id%type,p_contact_num employee.contact_num%type,p_gender employee.gender%type);
 procedure upt(p_employee_id employee.employee_id%type,p_name employee.name%type,p_pharmacy_branch_id employee.pharmacy_branch_id%type,p_contact_num employee.contact_num%type,p_gender employee.gender%type);
 procedure del(p_employee_id employee.employee_id%type);
 end employee_pkg;
 /
 create or replace  package body employee_pkg as
-function getid(p_employee_name employee.name%type) return employee.employee_id%Type as
+function get_emp_id(p_employee_name employee.name%type) return employee.employee_id%Type as
 v_id number;
 begin
    select employee_id into v_id from employee where name=p_employee_name;
@@ -16,19 +15,9 @@ begin
    exception
    when no_data_found then
         return 0;
- end getid;
- ---------------------------------------------------------------------------------------------------------------
-function getbranchid(p_employee_name employee.name%type) return employee.pharmacy_branch_id%Type as
- v_branch_id number;
-begin
-  select employee.pharmacy_branch_id into v_branch_id from employee where name=p_employee_name;
-  return v_branch_id;
-  exception
-    when no_data_found then
-      return 0;
-end getbranchid;
+ end get_emp_id;
 -----------------------------------------------------------------------------------------------------------------
-function getbranchid(p_employee_id employee.employee_id%type) return employee.pharmacy_branch_id%Type as
+function get_branch_id(p_employee_id employee.employee_id%type) return employee.pharmacy_branch_id%Type as
  v_branch_id number;
 begin
   select employee.pharmacy_branch_id into v_branch_id from employee where employee_id=p_employee_id;
@@ -36,7 +25,7 @@ begin
   exception
     when no_data_found then
       return 0;
-end getbranchid;
+end get_branch_id;
 --------------------------------------------------------------------------------------------------------------------
 procedure ins(p_employee_id employee.employee_id%type,p_name employee.name%type,p_pharmacy_branch_id employee.pharmacy_branch_id%type,p_contact_num employee.contact_num%type,p_gender employee.gender%type) as
 begin
